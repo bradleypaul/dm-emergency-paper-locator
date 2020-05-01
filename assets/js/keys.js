@@ -29,7 +29,7 @@ fetch(`https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-search-by-
 	console.log(err);
 });
 
-fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product?url=https%253A%252F%252Fwww.walmart.com%252Fip%252FSony-PlayStation-4-Slim-500GB-Gaming-Console-Black-CUH-2115A%252F536117094", {
+fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product?url=https://www.walmart.com/ip/Sony-PlayStation-4-Slim-500GB-Gaming-Console-Black-CUH-2115A/536117094", {
 	"method": "GET",
 	"headers": {
 		"x-rapidapi-host": "axesso-walmart-data-service.p.rapidapi.com",
@@ -42,7 +42,7 @@ fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-pro
 	console.log(err);
 });
 
-fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https%253A%252F%252Fwww.amazon.com%252FPlayStation-Slim-1TB-Console-Bundle-4%252Fdp%252FB07YLDNTKB%252F", {
+fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/PlayStation-Slim-1TB-Console-Bundle-4/dp/B07YLDNTKB", {
 	"method": "GET",
 	"headers": {
 		"x-rapidapi-host": "axesso-axesso-amazon-data-service-v1.p.rapidapi.com",
