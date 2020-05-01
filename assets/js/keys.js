@@ -1,7 +1,11 @@
 const axsessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
-const searchTerm = 'Playstation'
+const searchTerm = 'Toilet Paper';
+
+// start search queries
+// on second then, send to 
+
 fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 	"method": "GET",
 	"headers": {
@@ -42,7 +46,7 @@ fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-pro
 	console.log(err);
 });
 
-fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/PlayStation-Slim-1TB-Console-Bundle-4/dp/B07YLDNTKB", {
+fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/dp/B07YLDNTKB", {
 	"method": "GET",
 	"headers": {
 		"x-rapidapi-host": "axesso-axesso-amazon-data-service-v1.p.rapidapi.com",
