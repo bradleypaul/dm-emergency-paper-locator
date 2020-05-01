@@ -1,10 +1,10 @@
-#Dunder Mifflin Emergency Paper Locator
+# Dunder Mifflin Emergency Paper Locator
 * Easily locate nearby locations that stock essential products needed during the current pandemic
 
-#User-Story
+# User-Story
 
 _As a person affected by emergency situations_
 
-I would like to search for essential paper items
+_I would like to search for essential paper items_
 
-So that I can have those items delivered to my home location
+_So that I can have those items delivered to my home location_
