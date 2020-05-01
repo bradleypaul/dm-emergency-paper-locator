@@ -37,7 +37,7 @@ fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-pro
 	}
 })
 .then(response => response.json())
-.then(result => console.log(result))
+.then(result => console.log(makeWalmartProduct(result)))
 .catch(err => {
 	console.log(err);
 });
@@ -50,7 +50,30 @@ fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lo
 	}
 })
 .then(response => response.json())
-.then(result => console.log(result))
+.then(result => console.log(makeAmazonProduct(result)))
 .catch(err => {
 	console.log(err);
 });
+
+function makeAmazonProduct(product) {
+	return {
+		title: product.productTitle,
+		price: product.price || '',
+		availability: isAvailable(product.warehouseAvailability),
+		prime: product.prime,
+		url: `https://www.amazon.com/dp/${product.asin}`
+	};
+}
+
+function makeWalmartProduct(product) {
+	return {
+		title: product.productTitle,
+		price: product.price || '',
+		availability: product.available,
+		url: `https://www.walmart.com/ip/${product.walmartItemId}`
+	};
+}
+
+function isAvailable(availabilityString) {
+	return availabilityString.toLowerCase().includes('available')
+}
