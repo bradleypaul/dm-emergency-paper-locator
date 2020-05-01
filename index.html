@@ -1,11 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dunder-Mifflin Emergency Paper Locator</title>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Emergency Paper Locator</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/skeleton.css">
+
+  
 </head>
 <body>
-    
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 25%">
+        <h4>Paper Locator</h4>
+        <p><select class="u-full-width" id="exampleRecipientInput">
+          <option value="Option 1">Toilet Paper</option>
+          <option value="Option 2">Paper Towels</option>
+          <option value="Option 3">Hand Sanitizer</option>
+        </select>
+        <input class="button-primary" type="submit" value="search"> 
+        </p>
+      </div>
+      <div class="one-half column" style="margin-top: 25%">
+        <ul>
+          <li>Pick your quarentine essentials</li>
+          <li>Instantly view the availabilty and pricings from top online retailers</li>
+          <li>Follow the link to order from the shelter of your home</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of results will be hidden until search initiated-->
+  <div class="container results">
+   <div class="row">
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        <th>Retailer</th>
+        <th>Price</th>
+        <th>Count</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Amazon</td>
+        <td>$13.68</td>
+        <td>12</td>
+        <td><a class="button" href="#">Go to Site</a></td>
+      </tr>
+      <tr>
+        <td>Walmart</td>
+        <td>$15.49</td>
+        <td>12</td>
+        <td><a class="button" href="#">Go to Site</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<script src="assets/js/keys.js"></script>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
