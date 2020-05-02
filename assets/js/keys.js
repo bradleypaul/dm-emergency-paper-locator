@@ -2,11 +2,17 @@ const axsessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
-var searchTerm = ''
 var searchResults = [];
 
+const sortBy = 'price';
+let comparator = (a, b) => {
+	if(a[sortBy] < b[sortBy]) return -1;
+	else if(a[sortBy] === b[sortBy]) return 0;
+	else if(a[sortBy] > b[sortBy]) return 0;
+};
+
 //get the product url for the first 3 results from Amazon
-function getAmazonUrl() {
+function getAmazonUrl(searchTerm) {
 	fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 		"method": "GET",
 		"headers": {
@@ -30,7 +36,7 @@ function getAmazonUrl() {
 
 
 //get the product url for the first 3 results from Walmart
-function getWalmartUrl() {
+function getWalmartUrl(searchTerm) {
 	fetch(`https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-search-by-keyword?sortBy=best_match&page=1&keyword=${searchTerm}&type=text`, {
 		"method": "GET",
 		"headers": {
@@ -63,7 +69,7 @@ function getWalmartProduct(produrl) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeWalmartProduct(data);
-				searchResults.push(productDetails);
+				searchResults.push(productDetails).sort(comparator);
 			});
 		}
 	});
@@ -83,7 +89,7 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
-				searchResults.push(productDetails);
+				searchResults.push(productDetails).sort(comparator);
 			})
 		}
 	});
@@ -118,17 +124,20 @@ function setSearchTerm(event) {
 	event.preventDefault();
 
 	//get the current selected value
-	searchTerm = document.querySelector('#productSelection').value;
+	const searchTerm = document.querySelector('#productSelection').value;
 	console.log(searchTerm)
 	//call function to fetch product details
-	getAmazonUrl();
-	getWalmartUrl();
+
+	
 var display=document.querySelector("#results")
 var headerr=document.querySelector("#header")
 
 
 headerr.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
 display.setAttribute("style","display:visable;")
+
+	getAmazonUrl(searchTerm);
+	getWalmartUrl(searchTerm);
 
 };
 
