@@ -30,10 +30,10 @@
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-    <div class="row header">
-
-      <div class="one-half column" style="margin-top: 15%">
+  <div class="container ">
+    <div id="header" class="row header" style="padding-top: 30%; padding-bottom: 30%">
+    
+      <div class="one-half column " >
         <div class="brand row">
         <h2 class="main-header eight-columns title">Paper Locator <img class="logo two columns" src="./assets/images/logo.svg" alt="TP logo"></h2>
         
@@ -43,7 +43,7 @@
 
       </div>
     </div>
-    <div class="one-half column" style="margin-top: 15%">
+    <div class="one-half column " >
      
       <p><select class="u-full-width" id="productSelection">
         <option value="Toilet Paper">Toilet Paper</option>
@@ -57,7 +57,8 @@
      
       
     </div>
-
+ 
+</div>
     <!--Instructional greeting modal-->
     <div class="modal" id="modal" style="margin-left=15%;"> 
       <div class="container modal-content">
@@ -87,7 +88,7 @@
     
 
   <!-- Table of results will be hidden until search initiated-->
-  <div class="results">
+  <div id="results" class="container results" style="display: none;" >
    <div class="row">
   <table class="u-full-width">
     <thead>
