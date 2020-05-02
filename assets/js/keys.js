@@ -1,8 +1,32 @@
-const axsessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
+const axessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
 var searchResults = [];
+
+var fakeAmazon = [
+    {
+        "availability": true,
+        "price": "",
+        "prime": false,
+        "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+        "url": "https://www.amazon.com/dp/B000WLGGTQ"
+    },
+    {
+        "availability": true,
+        "price": "",
+        "prime": false,
+        "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+        "url": "https://www.amazon.com/dp/B07QV942J6"
+    },
+	{
+        "availability": false,
+        "price": 25.18,
+        "prime": false,
+        "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+        "url": "https://www.amazon.com/dp/B07ND5BB8V"
+    }
+];
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -17,7 +41,7 @@ function getAmazonUrl(searchTerm) {
 		"method": "GET",
 		"headers": {
 			"x-rapidapi-host": amazonHost,
-			"x-rapidapi-key": axsessoKey
+			"x-rapidapi-key": axessoKey
 		}
 	})
 	.then(response => {
@@ -41,7 +65,7 @@ function getWalmartUrl(searchTerm) {
 		"method": "GET",
 		"headers": {
 			"x-rapidapi-host": walmartHost,
-			"x-rapidapi-key": axsessoKey
+			"x-rapidapi-key": axessoKey 
 		}
 	})
 	.then(response => {
@@ -126,12 +150,20 @@ function setSearchTerm(event) {
 	//get the current selected value
 	searchResults = [];
 	searchTerm = document.querySelector('#productSelection').value;
-	
 
 	const searchTerm = document.querySelector('#productSelection').value;
 	//call function to fetch product details
-	getAmazonUrl(searchTerm);
-	getWalmartUrl(searchTerm);
+	// getAmazonUrl(searchTerm);
+	// getWalmartUrl(searchTerm);
+	displayResults();
 };
+
+function displayResults() {
+	console.log(fakeAmazon);
+
+	for (i=0; i < fakeAmazon.length; i++) {
+		
+	}
+}
 
 searchButtonEl.addEventListener('click', setSearchTerm);
