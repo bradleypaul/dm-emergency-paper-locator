@@ -28,31 +28,47 @@ function getAmazonUrl() {
 	});
 };
 
-// fetch(`https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-search-by-keyword?sortBy=best_match&page=1&keyword=${searchTerm}&type=text`, {
-// 	"method": "GET",
-// 	"headers": {
-// 		"x-rapidapi-host": walmartHost,
-// 		"x-rapidapi-key": axsessoKey
-// 	}
-// })
-// .then(response => response.json())
-// .then(result => console.log(result))
-// .catch(err => {
-// 	console.log(err);
-// });
 
-// fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product?url=https://www.walmart.com/ip/Sony-PlayStation-4-Slim-500GB-Gaming-Console-Black-CUH-2115A/536117094", {
-// 	"method": "GET",
-// 	"headers": {
-// 		"x-rapidapi-host": "axesso-walmart-data-service.p.rapidapi.com",
-// 		"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
-// 	}
-// })
-// .then(response => response.json())
-// .then(result => console.log(makeWalmartProduct(result)))
-// .catch(err => {
-// 	console.log(err);
-// });
+//get the product url for the first 3 results from Walmart
+function getWalmartUrl() {
+	fetch(`https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-search-by-keyword?sortBy=best_match&page=1&keyword=${searchTerm}&type=text`, {
+		"method": "GET",
+		"headers": {
+			"x-rapidapi-host": walmartHost,
+			"x-rapidapi-key": axsessoKey
+		}
+	})
+	.then(response => {
+		if (response.ok) {
+			response.json().then(function(data) {
+				for (i=0; i < 3; i++) {
+					var produrl = data.foundProducts[i];
+					//load product url to get specific product details
+					getWalmartProduct(produrl);
+				}
+			});
+		}
+	});
+};
+
+function getWalmartProduct(produrl) {
+	fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product?url=https://www.walmart.com" + produrl, {
+		"method": "GET",
+		"headers": {
+			"x-rapidapi-host": "axesso-walmart-data-service.p.rapidapi.com",
+			"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
+		}
+	})
+	.then(response => {
+		if (response.ok) {
+			response.json().then(function(data){
+				var productDetails = makeWalmartProduct(data);
+				searchResults.push(productDetails);
+			});
+		}
+	});
+};
+
 
 function getAmazonProduct(asin) {
 	fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/dp/" + asin, {
@@ -68,7 +84,6 @@ function getAmazonProduct(asin) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
 				searchResults.push(productDetails);
-				console.log('Done');
 			})
 		}
 	});
@@ -107,6 +122,7 @@ function setSearchTerm(event) {
 	
 	//call function to fetch product details
 	getAmazonUrl();
+	getWalmartUrl();
 };
 
 searchButtonEl.addEventListener('click', setSearchTerm);
