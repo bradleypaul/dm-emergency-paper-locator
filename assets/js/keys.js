@@ -119,7 +119,7 @@ function setSearchTerm(event) {
 
 	//get the current selected value
 	searchTerm = document.querySelector('#productSelection').value;
-	
+	console.log(searchTerm)
 	//call function to fetch product details
 	getAmazonUrl();
 	getWalmartUrl();
