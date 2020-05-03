@@ -118,6 +118,7 @@ function setSearchTerm(event) {
 	event.preventDefault();
 
 	//get the current selected value
+	searchResults = [];
 	searchTerm = document.querySelector('#productSelection').value;
 	
 	//call function to fetch product details
