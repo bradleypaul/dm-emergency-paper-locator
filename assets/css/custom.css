@@ -1,0 +1,50 @@
+.title{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.body{
+font-family: 'Quicksand', sans-serif;
+}
+
+.logo{
+    max-width: 35%;
+    
+
+}
+
+.prime-icon{
+    max-width: 10%;
+}
+
+.header{
+    background-color: rgb(249, 254, 255);
+    border-bottom: solid;
+    border-color: rgba(86, 180, 204);
+    border-radius: 8%;
+    
+}
+.modal {
+    display: visible; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 90%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(249, 254, 255); /* Fallback color */
+    border-radius: 8%;
+    border-style: solid;
+    border-color: rgba(86, 180, 204);
+
+  }
+  .modal-content {
+      
+
+  }
+ .closed{
+     display: none;
+ }
+a:hover{ 
+    background-color: rgb(55, 162, 233,0.7);
+}
