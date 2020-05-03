@@ -4,29 +4,29 @@ const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
 var searchResults = [];
 
-var fakeAmazon = [
-    {
-        "availability": true,
-        "price": "",
-        "prime": false,
-        "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
-        "url": "https://www.amazon.com/dp/B000WLGGTQ"
-    },
-    {
-        "availability": true,
-        "price": "",
-        "prime": false,
-        "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
-        "url": "https://www.amazon.com/dp/B07QV942J6"
-    },
-	{
-        "availability": false,
-        "price": 25.18,
-        "prime": false,
-        "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
-        "url": "https://www.amazon.com/dp/B07ND5BB8V"
-    }
-];
+// var fakeAmazon = [
+//     {
+//         "availability": true,
+//         "price": "",
+//         "prime": false,
+//         "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+//         "url": "https://www.amazon.com/dp/B000WLGGTQ"
+//     },
+//     {
+//         "availability": true,
+//         "price": "",
+//         "prime": false,
+//         "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+//         "url": "https://www.amazon.com/dp/B07QV942J6"
+//     },
+// 	{
+//         "availability": false,
+//         "price": 25.18,
+//         "prime": false,
+//         "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+//         "url": "https://www.amazon.com/dp/B07ND5BB8V"
+//     }
+// ];
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -93,7 +93,8 @@ function getWalmartProduct(produrl) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeWalmartProduct(data);
-				searchResults.push(productDetails).sort(comparator);
+				searchResults.push(productDetails);
+				// searchResults.push(productDetails).sort(comparator);
 			});
 		}
 	});
@@ -113,7 +114,8 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
-				searchResults.push(productDetails).sort(comparator);
+				searchResults.push(productDetails)
+				// searchResults.push(productDetails).sort(comparator);
 			})
 		}
 	});
@@ -149,41 +151,41 @@ function setSearchTerm(event) {
 
 	//get the current selected value
 	searchResults = [];
-	searchTerm = document.querySelector('#productSelection').value;
+	// searchTerm = document.querySelector('#productSelection').value;
 
 	const searchTerm = document.querySelector('#productSelection').value;
 	//call function to fetch product details
-	// getAmazonUrl(searchTerm);
-	// getWalmartUrl(searchTerm);
-	var productsTbody = document.querySelector("#products tbody");
-	displayResults(productsTbody, fakeAmazon);
+	getAmazonUrl(searchTerm);
+	getWalmartUrl(searchTerm);
+	// var productsTbody = document.querySelector("#products tbody");
+	// displayResults(productsTbody, fakeAmazon);
+	displayResults(searchResults);
 };
 
-// function displayResults() {
-// 	console.log(fakeAmazon);
-// 	for (i=0; i < searchResults.length; i++) {
-// 	}
-// }
-
-function displayResults(nl, data) { // nl -> NodeList, data -> array with objects
-	data.forEach((row_key, row_val) => {
-	  var tr = nl.insertRow(row_val);
-	// 
-	// if keys(d).contains() prime: true then "Amazon Prime"
-	// else if keys(d).contains() prime: false then "Amazon"
-	// else "Walmart"
-	  Object.keys(row_key).forEach((col_key, col_val) => { // Keys from object represent th.innerHTML
-		// if (Object.keys.contains("prime") && Object.row_key === "true") {
-		// 	cell.innerHTML = row_key[col_key];
-		// }
-		var cell = tr.insertCell(col_val);
-		// if (d === "prime") {
-		// 	cell.innerHTML = "Amazon";
-		// }
-		cell.innerHTML = row_key[col_key]; // Assign object values to cells   
-	  });
-	  nl.appendChild(tr);
-	})
+function displayResults(searchResults) {
+	for (i=0; i < searchResults.length; i++) {
+	}
 }
+
+// function displayResults(nl, data) { // nl -> NodeList, data -> array with objects
+// 	data.forEach((row_key, row_val) => {
+// 	  var tr = nl.insertRow(row_val);
+// 	// 
+// 	// if keys(d).contains() prime: true then "Amazon Prime"
+// 	// else if keys(d).contains() prime: false then "Amazon"
+// 	// else "Walmart"
+// 	  Object.keys(row_key).forEach((col_key, col_val) => { // Keys from object represent th.innerHTML
+// 		// if (Object.keys.contains("prime") && Object.row_key === "true") {
+// 		// 	cell.innerHTML = row_key[col_key];
+// 		// }
+// 		var cell = tr.insertCell(col_val);
+// 		// if (d === "prime") {
+// 		// 	cell.innerHTML = "Amazon";
+// 		// }
+// 		cell.innerHTML = row_key[col_key]; // Assign object values to cells   
+// 	  });
+// 	  nl.appendChild(tr);
+// 	})
+// }
 
 searchButtonEl.addEventListener('click', setSearchTerm);
