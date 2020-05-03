@@ -159,10 +159,10 @@ function setSearchTerm(event) {
 	getWalmartUrl(searchTerm);
 	// var productsTbody = document.querySelector("#products tbody");
 	// displayResults(productsTbody, fakeAmazon);
-	displayResults(searchResults);
+	displayResults(fakeAmazon);
 };
 
-function displayResults(searchResults) {
+function displayResults(fakeAmazon) {
 	var products = document.getElementById('products');
 	for (i=0; i < fakeAmazon.length; i++) {
 		products.innerHTML += "<tr><td>"+fakeAmazon[i].availability+"</td><td>"+fakeAmazon[i].price+"</td><td>"+fakeAmazon[i].prime+"</td><td>"+fakeAmazon[i].title+"</td><td>"+fakeAmazon[i].url+"</td></tr>";
