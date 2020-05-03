@@ -4,29 +4,29 @@ const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
 var searchResults = [];
 
-var fakeAmazon = [
-    {
-		"prime": false,
-		"title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
-		"price": "",
-		"availability": true,
-        "url": "https://www.amazon.com/dp/B000WLGGTQ"
-    },
-    {
-		"prime": false,
-		"title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
-		"price": "",
-		"availability": true,
-        "url": "https://www.amazon.com/dp/B07QV942J6"
-    },
-	{
-		"prime": false,
-		"title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
-		"price": 25.18,
-		"availability": false,
-        "url": "https://www.amazon.com/dp/B07ND5BB8V"
-    }
-];
+// var fakeAmazon = [
+//     {
+// 		"prime": false,
+// 		"title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+// 		"price": "",
+// 		"availability": true,
+//         "url": "https://www.amazon.com/dp/B000WLGGTQ"
+//     },
+//     {
+// 		"prime": false,
+// 		"title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+// 		"price": "",
+// 		"availability": true,
+//         "url": "https://www.amazon.com/dp/B07QV942J6"
+//     },
+// 	{
+// 		"prime": false,
+// 		"title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+// 		"price": 25.18,
+// 		"availability": false,
+//         "url": "https://www.amazon.com/dp/B07ND5BB8V"
+//     }
+// ];
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -94,7 +94,7 @@ function getWalmartProduct(produrl) {
 			response.json().then(function(data){
 				var productDetails = makeWalmartProduct(data);
 				searchResults.push(productDetails);
-				// searchResults.push(productDetails).sort(comparator);
+				searchResults.sort(comparator);
 			});
 		}
 	});
@@ -114,8 +114,11 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
-				searchResults.push(productDetails)
-				// searchResults.push(productDetails).sort(comparator);
+				console.log("searchResults", searchResults, "productDetails", productDetails);
+				displayResults(searchResults);
+
+				searchResults.push(productDetails);
+				searchResults.sort(comparator);
 			})
 		}
 	});
@@ -127,7 +130,7 @@ function makeAmazonProduct(product) {
 		prime: product.prime,
 		title: product.productTitle,
 		price: product.price || '',
-		availability: isAvailable(product.warehouseAvailability),
+		// availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
 }
@@ -142,15 +145,15 @@ function makeWalmartProduct(product) {
 }
 
 function isAvailable(availabilityString) {
-	return availabilityString.toLowerCase().includes('available')
+	return availabilityString && !availabilityString.toLowerCase().includes('unavailable');
 }
 
-function setSearchTerm(event) {
+function setSearchTerm(event, data) {
 	//prevent page reload
 	event.preventDefault();
 
 	//get the current selected value
-	searchResults = [];
+	// searchResults = [];
 	// searchTerm = document.querySelector('#productSelection').value;
 
 	const searchTerm = document.querySelector('#productSelection').value;
@@ -159,14 +162,20 @@ function setSearchTerm(event) {
 	getWalmartUrl(searchTerm);
 	// var productsTbody = document.querySelector("#products tbody");
 	// displayResults(productsTbody, fakeAmazon);
-	displayResults(fakeAmazon);
+	displayResults(searchResults);
 };
 
-function displayResults(fakeAmazon) {
+function displayResults(searchResults) {
+	
 	var products = document.getElementById('products');
-	for (i=0; i < fakeAmazon.length; i++) {
-		products.innerHTML = "";
-		products.innerHTML += "<tr><td>"+fakeAmazon[i].prime+"</td><td>"+fakeAmazon[i].title+"</td><td>"+fakeAmazon[i].price+"</td><td>"+fakeAmazon[i].availability+"</td><td>"+fakeAmazon[i].url+"</td></tr>";
+	var title = document.getElementById('title');
+	var price = document.getElementById('price');
+	var url = document.getElementById('url');
+	for (var i=0; i < searchResults.length; i++) {
+		// products.innerHTML = "";
+		title.innerHTML += "<td>"+searchResults[i].title+"</td>"
+		price.innerHTML += "<td>"+searchResults[i].price+"</td>"
+		url.innerHTML += "<td>"+searchResults[i].url+"</td>"
 	}
 }
 
@@ -178,13 +187,7 @@ function displayResults(fakeAmazon) {
 // 	// else if keys(d).contains() prime: false then "Amazon"
 // 	// else "Walmart"
 // 	  Object.keys(row_key).forEach((col_key, col_val) => { // Keys from object represent th.innerHTML
-// 		// if (Object.keys.contains("prime") && Object.row_key === "true") {
-// 		// 	cell.innerHTML = row_key[col_key];
-// 		// }
 // 		var cell = tr.insertCell(col_val);
-// 		// if (d === "prime") {
-// 		// 	cell.innerHTML = "Amazon";
-// 		// }
 // 		cell.innerHTML = row_key[col_key]; // Assign object values to cells   
 // 	  });
 // 	  nl.appendChild(tr);
