@@ -6,24 +6,24 @@ var searchResults = [];
 
 var fakeAmazon = [
     {
-        "availability": true,
-        "price": "",
-        "prime": false,
-        "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+		"prime": false,
+		"title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+		"price": "",
+		"availability": true,
         "url": "https://www.amazon.com/dp/B000WLGGTQ"
     },
     {
-        "availability": true,
-        "price": "",
-        "prime": false,
-        "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+		"prime": false,
+		"title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+		"price": "",
+		"availability": true,
         "url": "https://www.amazon.com/dp/B07QV942J6"
     },
 	{
-        "availability": false,
-        "price": 25.18,
-        "prime": false,
-        "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+		"prime": false,
+		"title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+		"price": 25.18,
+		"availability": false,
         "url": "https://www.amazon.com/dp/B07ND5BB8V"
     }
 ];
@@ -165,7 +165,8 @@ function setSearchTerm(event) {
 function displayResults(fakeAmazon) {
 	var products = document.getElementById('products');
 	for (i=0; i < fakeAmazon.length; i++) {
-		products.innerHTML += "<tr><td>"+fakeAmazon[i].availability+"</td><td>"+fakeAmazon[i].price+"</td><td>"+fakeAmazon[i].prime+"</td><td>"+fakeAmazon[i].title+"</td><td>"+fakeAmazon[i].url+"</td></tr>";
+		products.innerHTML = "";
+		products.innerHTML += "<tr><td>"+fakeAmazon[i].prime+"</td><td>"+fakeAmazon[i].title+"</td><td>"+fakeAmazon[i].price+"</td><td>"+fakeAmazon[i].availability+"</td><td>"+fakeAmazon[i].url+"</td></tr>";
 	}
 }
 
