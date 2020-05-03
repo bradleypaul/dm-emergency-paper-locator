@@ -4,30 +4,6 @@ const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
 var searchResults = [];
 
-// var fakeAmazon = [
-//     {
-// 		"prime": false,
-// 		"title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
-// 		"price": "",
-// 		"availability": true,
-//         "url": "https://www.amazon.com/dp/B000WLGGTQ"
-//     },
-//     {
-// 		"prime": false,
-// 		"title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
-// 		"price": "",
-// 		"availability": true,
-//         "url": "https://www.amazon.com/dp/B07QV942J6"
-//     },
-// 	{
-// 		"prime": false,
-// 		"title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
-// 		"price": 25.18,
-// 		"availability": false,
-//         "url": "https://www.amazon.com/dp/B07ND5BB8V"
-//     }
-// ];
-
 const sortBy = 'price';
 let comparator = (a, b) => {
 	if(a[sortBy] < b[sortBy]) return -1;
@@ -127,16 +103,18 @@ function getAmazonProduct(asin) {
 
 function makeAmazonProduct(product) {
 	return {
+		retailer: "Amazon",
 		prime: product.prime,
 		title: product.productTitle,
 		price: product.price || '',
-		// availability: isAvailable(product.warehouseAvailability),
+		availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
 }
 
 function makeWalmartProduct(product) {
 	return {
+		retailer: "Walmart",
 		title: product.productTitle,
 		price: product.price || '',
 		availability: product.available,
@@ -154,44 +132,40 @@ function setSearchTerm(event, data) {
 
 	//get the current selected value
 	// searchResults = [];
-	// searchTerm = document.querySelector('#productSelection').value;
 
 	const searchTerm = document.querySelector('#productSelection').value;
 	//call function to fetch product details
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
-	// var productsTbody = document.querySelector("#products tbody");
-	// displayResults(productsTbody, fakeAmazon);
 	displayResults(searchResults);
 };
 
 function displayResults(searchResults) {
 	
-	var products = document.getElementById('products');
-	var title = document.getElementById('title');
-	var price = document.getElementById('price');
-	var url = document.getElementById('url');
-	for (var i=0; i < searchResults.length; i++) {
-		// products.innerHTML = "";
-		title.innerHTML += "<td>"+searchResults[i].title+"</td>"
-		price.innerHTML += "<td>"+searchResults[i].price+"</td>"
-		url.innerHTML += "<td>"+searchResults[i].url+"</td>"
-	}
-}
+	var table = "";
 
-// function displayResults(nl, data) { // nl -> NodeList, data -> array with objects
-// 	data.forEach((row_key, row_val) => {
-// 	  var tr = nl.insertRow(row_val);
-// 	// 
-// 	// if keys(d).contains() prime: true then "Amazon Prime"
-// 	// else if keys(d).contains() prime: false then "Amazon"
-// 	// else "Walmart"
-// 	  Object.keys(row_key).forEach((col_key, col_val) => { // Keys from object represent th.innerHTML
-// 		var cell = tr.insertCell(col_val);
-// 		cell.innerHTML = row_key[col_key]; // Assign object values to cells   
-// 	  });
-// 	  nl.appendChild(tr);
-// 	})
-// }
+	for (var i=0; i < searchResults.length; i++) {
+
+		var tr = "<tr>";
+
+		if (searchResults[i].retailer === "Amazon") {
+			if (searchResults[i].prime) {
+				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
+			} else {
+				tr += "<td>"+searchResults[i].retailer+"</td>";
+			}
+		} else {
+			tr += "<td>"+searchResults[i].retailer+"</td>";
+		}
+		
+		tr += "<td>"+searchResults[i].title+"</td>";
+		tr += "<td>"+"$"+searchResults[i].price+"</td>";
+		tr += "<td>"+searchResults[i].availability+"</td>";
+		tr += "<td>"+'<a class="button" href="'+searchResults[i].url+'">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
+		tr += "</tr>";
+      	table += tr;
+	}
+	document.getElementById("products").innerHTML += table;
+}
 
 searchButtonEl.addEventListener('click', setSearchTerm);
