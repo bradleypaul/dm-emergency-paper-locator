@@ -124,10 +124,10 @@ function setSearchTerm(event) {
 	getAmazonUrl();
 	getWalmartUrl();
 var display=document.querySelector("#results")
-var headerr=document.querySelector("#header")
+var header=document.querySelector("#header")
 
 
-headerr.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
+header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
 display.setAttribute("style","display:visable;")
 
 };
