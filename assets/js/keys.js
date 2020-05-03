@@ -122,10 +122,10 @@ function getAmazonProduct(asin) {
 
 function makeAmazonProduct(product) {
 	return {
+		prime: product.prime,
 		title: product.productTitle,
 		price: product.price || '',
 		availability: isAvailable(product.warehouseAvailability),
-		prime: product.prime,
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
 }
@@ -155,15 +155,35 @@ function setSearchTerm(event) {
 	//call function to fetch product details
 	// getAmazonUrl(searchTerm);
 	// getWalmartUrl(searchTerm);
-	displayResults();
+	var productsTbody = document.querySelector("#products tbody");
+	displayResults(productsTbody, fakeAmazon);
 };
 
-function displayResults() {
-	console.log(fakeAmazon);
+// function displayResults() {
+// 	console.log(fakeAmazon);
+// 	for (i=0; i < searchResults.length; i++) {
+// 	}
+// }
 
-	for (i=0; i < fakeAmazon.length; i++) {
-		
-	}
+function displayResults(nl, data) { // nl -> NodeList, data -> array with objects
+	data.forEach((row_key, row_val) => {
+	  var tr = nl.insertRow(row_val);
+	// 
+	// if keys(d).contains() prime: true then "Amazon Prime"
+	// else if keys(d).contains() prime: false then "Amazon"
+	// else "Walmart"
+	  Object.keys(row_key).forEach((col_key, col_val) => { // Keys from object represent th.innerHTML
+		// if (Object.keys.contains("prime") && Object.row_key === "true") {
+		// 	cell.innerHTML = row_key[col_key];
+		// }
+		var cell = tr.insertCell(col_val);
+		// if (d === "prime") {
+		// 	cell.innerHTML = "Amazon";
+		// }
+		cell.innerHTML = row_key[col_key]; // Assign object values to cells   
+	  });
+	  nl.appendChild(tr);
+	})
 }
 
 searchButtonEl.addEventListener('click', setSearchTerm);
