@@ -4,29 +4,29 @@ const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
 var searchResults = [];
 
-// var fakeAmazon = [
-//     {
-//         "availability": true,
-//         "price": "",
-//         "prime": false,
-//         "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
-//         "url": "https://www.amazon.com/dp/B000WLGGTQ"
-//     },
-//     {
-//         "availability": true,
-//         "price": "",
-//         "prime": false,
-//         "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
-//         "url": "https://www.amazon.com/dp/B07QV942J6"
-//     },
-// 	{
-//         "availability": false,
-//         "price": 25.18,
-//         "prime": false,
-//         "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
-//         "url": "https://www.amazon.com/dp/B07ND5BB8V"
-//     }
-// ];
+var fakeAmazon = [
+    {
+        "availability": true,
+        "price": "",
+        "prime": false,
+        "title": "Angel Soft, Toilet Paper, Double Rolls, 12 Count of 234 Sheets Per Roll",
+        "url": "https://www.amazon.com/dp/B000WLGGTQ"
+    },
+    {
+        "availability": true,
+        "price": "",
+        "prime": false,
+        "title": "Amazon Brand - Presto! 308-Sheet Mega Roll Toilet Paper, Ultra-Soft, 6 Count",
+        "url": "https://www.amazon.com/dp/B07QV942J6"
+    },
+	{
+        "availability": false,
+        "price": 25.18,
+        "prime": false,
+        "title": "Cottonelle Ultra CleanCare Soft Toilet Paper with Active Cleaning Ripples, 24 Family Mega Rolls",
+        "url": "https://www.amazon.com/dp/B07ND5BB8V"
+    }
+];
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -159,11 +159,13 @@ function setSearchTerm(event) {
 	getWalmartUrl(searchTerm);
 	// var productsTbody = document.querySelector("#products tbody");
 	// displayResults(productsTbody, fakeAmazon);
-	displayResults(searchResults);
+	displayResults(fakeAmazon);
 };
 
-function displayResults(searchResults) {
+function displayResults(fakeAmazon) {
+	var products=document.getElementById('products');
 	for (i=0; i < searchResults.length; i++) {
+		products.innerHTML += "<tr><td>"+fakeAmazon[i].availability+"</td><td>"+fakeAmazon[i].price+"</td><td>"+fakeAmazon[i].prime+"</td><td>"+fakeAmazon[i].title+"</td><td>"+fakeAmazon[i].url+"</td></tr>";
 	}
 }
 
