@@ -90,7 +90,6 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
-				console.log("searchResults", searchResults, "productDetails", productDetails);
 				displayResults(searchResults);
 
 				searchResults.push(productDetails);
@@ -123,6 +122,9 @@ function makeWalmartProduct(product) {
 }
 
 function isAvailable(availabilityString) {
+	// unavailable products return "Currently unavailable. We don't know when or if this item will be back in stock."
+	// available products can return either "In stock" or "Available from these sellers..."
+	// search for unavailable instead and not the result
 	return availabilityString && !availabilityString.toLowerCase().includes('unavailable');
 }
 
