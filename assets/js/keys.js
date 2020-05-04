@@ -1,4 +1,4 @@
-const axsessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
+const axessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
@@ -16,7 +16,7 @@ function getAmazonUrl(searchTerm) {
 	fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 		"method": "GET",
 		"headers": {
-			"x-rapidapi-key": axsessoKey
+			"x-rapidapi-key": axessoKey
 		}
 	})
 	.then(response => {
@@ -43,7 +43,7 @@ function getWalmartUrl(searchTerm) {
 		"method": "GET",
 		"headers": {
 			"x-rapidapi-host": walmartHost,
-			"x-rapidapi-key": axsessoKey
+			"x-rapidapi-key": axessoKey 
 		}
 	})
 	.then(response => {
@@ -95,6 +95,8 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
+				displayResults(searchResults);
+
 				searchResults.push(productDetails);
 				searchResults.sort(comparator);
 			})
@@ -105,16 +107,18 @@ function getAmazonProduct(asin) {
 
 function makeAmazonProduct(product) {
 	return {
+		retailer: "Amazon",
+		prime: product.prime,
 		title: product.productTitle,
 		price: product.price || '',
 		availability: isAvailable(product.warehouseAvailability),
-		prime: product.prime,
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
 }
 
 function makeWalmartProduct(product) {
 	return {
+		retailer: "Walmart",
 		title: product.productTitle,
 		price: product.price || '',
 		availability: product.available,
@@ -149,7 +153,35 @@ display.setAttribute("style","display:visable;")
 
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
-
+	displayResults(searchResults);
 };
+
+function displayResults(searchResults) {
+	
+	var table = "";
+
+	for (var i=0; i < searchResults.length; i++) {
+
+		var tr = "<tr>";
+
+		if (searchResults[i].retailer === "Amazon") {
+			if (searchResults[i].prime) {
+				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
+			} else {
+				tr += "<td>"+searchResults[i].retailer+"</td>";
+			}
+		} else {
+			tr += "<td>"+searchResults[i].retailer+"</td>";
+		}
+		
+		tr += "<td>"+searchResults[i].title+"</td>";
+		tr += "<td>"+"$"+searchResults[i].price+"</td>";
+		tr += "<td>"+searchResults[i].availability+"</td>";
+		tr += "<td>"+'<a class="button" href="'+searchResults[i].url+'">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
+		tr += "</tr>";
+      	table += tr;
+	}
+	document.getElementById("products").innerHTML += table;
+}
 
 searchButtonEl.addEventListener('click', setSearchTerm);

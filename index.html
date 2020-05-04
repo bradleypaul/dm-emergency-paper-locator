@@ -60,7 +60,7 @@
  
 </div>
     <!--Instructional greeting modal-->
-    <div class="modal" id="modal" style="margin-left=15%;"> 
+    <div class="modal" id="modal" style="margin-left=15%;"> <!--TODO FIX EQUALS BUG-->
       <div class="container modal-content">
         <div class="row" style= "margin-top:10%;">
           
@@ -89,34 +89,36 @@
 
   <!-- Table of results will be hidden until search initiated-->
   <div id="results" class="container results" style="display: none;" >
-   <div class="row">
-  <table class="u-full-width">
-    <thead>
-      <tr>
-        <th>Retailer</th>
-        <th></th>
-        <th>Price</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-       
-        <td>Amazon  <img class="prime-icon" src="./assets/images/prime-icon.svg" alt="prime"></td>
-        <td>Charmin 12 Roll</td>
-        <td>$12.49</td>
-        <td><a class="button" href="#">Go to Site</a></td>
-      </tr>
-      <tr>
-        <td>Walmart</td>
-        <td>what ever type</td>
-        <td>$12.98</td>
-        <td><a class="button" href="#">Go to Site</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
+    <div class="row">
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Retailer</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Purchase</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tbody id="products">
+          <!-- <tr>
+            <td>Amazon  <img class="prime-icon" src="./assets/images/prime-icon.svg" alt="prime"></td>
+            <td id="title">Charmin 12 Roll</td>
+            <td id="price">$12.49</td>
+            <td><a class="button" id="url" href="#">Go to Site</a></td>
+          </tr>
+          <tr>
+            <td>Walmart</td>
+            <td>what ever type</td>
+            <td>$12.98</td>
+            <td><a class="button" href="#">Go to Site</a></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 <script src="assets/js/keys.js"></script>
 <script src="assets/js/modalHandler.js"></script>
 
