@@ -16,7 +16,6 @@ function getAmazonUrl(searchTerm) {
 	fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 		"method": "GET",
 		"headers": {
-			"x-rapidapi-host": amazonHost,
 			"x-rapidapi-key": axsessoKey
 		}
 	})
@@ -130,10 +129,8 @@ function setSearchTerm(event) {
 
 	//get the current selected value
 	searchResults = [];
-	searchTerm = document.querySelector('#productSelection').value;
+	var searchTerm = document.querySelector('#productSelection').value;
 	
-
-	const searchTerm = document.querySelector('#productSelection').value;
 	//call function to fetch product details
 
 	
