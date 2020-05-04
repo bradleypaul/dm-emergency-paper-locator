@@ -29,6 +29,9 @@ function getAmazonUrl(searchTerm) {
 					getAmazonProduct(asin);
 				}
 			});
+		} else {
+			//temporary alert will update later
+			alert('No response found');
 		}
 	});
 };
@@ -52,6 +55,9 @@ function getWalmartUrl(searchTerm) {
 					getWalmartProduct(produrl);
 				}
 			});
+		} else {
+			//temporary alert, will update later
+			alert('No response found');
 		}
 	});
 };
