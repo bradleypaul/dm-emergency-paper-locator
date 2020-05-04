@@ -135,8 +135,18 @@ function setSearchTerm(event) {
 
 	const searchTerm = document.querySelector('#productSelection').value;
 	//call function to fetch product details
+
+	
+var display=document.querySelector("#results")
+var header=document.querySelector("#header")
+
+
+header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
+display.setAttribute("style","display:visable;")
+
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
+
 };
 
 searchButtonEl.addEventListener('click', setSearchTerm);
