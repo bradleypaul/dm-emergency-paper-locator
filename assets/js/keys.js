@@ -16,7 +16,6 @@ function getAmazonUrl(searchTerm) {
 	fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 		"method": "GET",
 		"headers": {
-			"x-rapidapi-host": amazonHost,
 			"x-rapidapi-key": axessoKey
 		}
 	})
@@ -30,6 +29,9 @@ function getAmazonUrl(searchTerm) {
 					getAmazonProduct(asin);
 				}
 			});
+		} else {
+			//temporary alert will update later
+			alert('No response found');
 		}
 	});
 };
@@ -53,6 +55,9 @@ function getWalmartUrl(searchTerm) {
 					getWalmartProduct(produrl);
 				}
 			});
+		} else {
+			//temporary alert, will update later
+			alert('No response found');
 		}
 	});
 };
@@ -133,9 +138,19 @@ function setSearchTerm(event) {
 	event.preventDefault();
 
 	//get the current selected value
-	const searchTerm = document.querySelector('#productSelection').value;
+	searchResults = [];
+	var searchTerm = document.querySelector('#productSelection').value;
 	
 	//call function to fetch product details
+
+	
+var display=document.querySelector("#results")
+var header=document.querySelector("#header")
+
+
+header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
+display.setAttribute("style","display:visable;")
+
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
 	displayResults(searchResults);
