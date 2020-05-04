@@ -128,14 +128,13 @@ function isAvailable(availabilityString) {
 	return availabilityString && !availabilityString.toLowerCase().includes('unavailable');
 }
 
-function setSearchTerm(event, data) {
+function setSearchTerm(event) {
 	//prevent page reload
 	event.preventDefault();
 
 	//get the current selected value
-	// searchResults = [];
-
 	const searchTerm = document.querySelector('#productSelection').value;
+	
 	//call function to fetch product details
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
