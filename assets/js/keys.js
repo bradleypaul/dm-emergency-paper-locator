@@ -2,7 +2,20 @@ const axessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
 const searchButtonEl = document.querySelector('#searchProduct');
+const errorModal = document.querySelector("#error-modal")
+const errorMessage = document.querySelector("#error-message")
+const errorClose = document.querySelector("#modal-close-btn")
 var searchResults = [];
+
+var error = function(x){
+	errorModal.setAttribute("style","display:visible;");
+	errorMessage.textContent="Error: "+ x ;
+    var closeModal=function() {
+	errorModal.setAttribute("style","display:none;");
+	}
+	errorClose.addEventListener("click",closeModal);
+
+}
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -30,8 +43,9 @@ function getAmazonUrl(searchTerm) {
 				}
 			});
 		} else {
-			//temporary alert will update later
-			alert('No response found');
+			//error modal
+			error( response.statusText);
+
 		}
 	});
 };
@@ -56,8 +70,8 @@ function getWalmartUrl(searchTerm) {
 				}
 			});
 		} else {
-			//temporary alert, will update later
-			alert('No response found');
+			//error modal
+			error( response.statusText);
 		}
 	});
 };
