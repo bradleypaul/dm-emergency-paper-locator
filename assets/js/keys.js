@@ -91,6 +91,7 @@ function getWalmartProduct(produrl) {
 				var productDetails = makeWalmartProduct(data);
 				searchResults.push(productDetails);
 				searchResults.sort(comparator);
+				searchResultsComplete()
 			});
 		}
 	});
@@ -110,10 +111,9 @@ function getAmazonProduct(asin) {
 		if (response.ok) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
-				displayResults(searchResults);
-
 				searchResults.push(productDetails);
 				searchResults.sort(comparator);
+				searchResultsComplete()
 			})
 		}
 	});
@@ -171,17 +171,19 @@ display.setAttribute("style","display:visable;")
 
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
-	displayResults(searchResults);
 };
 
-function displayResults() {
-	
+function searchResultsComplete() {
+	if (searchResults.length === 6) {
+		displayResults();
+	}
+};
+
+function displayResults() {	
 	var table = "";
 
 	for (var i=0; i < searchResults.length; i++) {
-
 		var tr = "<tr>";
-
 		if (searchResults[i].retailer === "Amazon") {
 			if (searchResults[i].prime) {
 				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
@@ -197,7 +199,7 @@ function displayResults() {
 		tr += "<td>"+searchResults[i].availability+"</td>";
 		tr += "<td>"+'<a class="button" href="'+searchResults[i].url+'">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
 		tr += "</tr>";
-      	table += tr;
+		  table += tr;
 	}
 	productTableEl.innerHTML += table;
 }
