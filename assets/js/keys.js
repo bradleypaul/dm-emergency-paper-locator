@@ -174,7 +174,9 @@ display.setAttribute("style","display:visable;")
 };
 
 function searchResultsComplete() {
+	//check to ensure that searchResults is complete
 	if (searchResults.length === 6) {
+		//run displayResults function once to avoid looped results
 		displayResults();
 	}
 };
