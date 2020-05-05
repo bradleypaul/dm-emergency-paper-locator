@@ -5,6 +5,7 @@ const searchButtonEl = document.querySelector('#searchProduct');
 const errorModal = document.querySelector("#error-modal")
 const errorMessage = document.querySelector("#error-message")
 const errorClose = document.querySelector("#modal-close-btn")
+const productTableEl = document.getElementById("products");
 var searchResults = [];
 
 var error = function(x){
@@ -151,6 +152,9 @@ function setSearchTerm(event) {
 	//prevent page reload
 	event.preventDefault();
 
+	//remove current search results
+	productTableEl.innerHTML = '';
+
 	//get the current selected value
 	searchResults = [];
 	var searchTerm = document.querySelector('#productSelection').value;
@@ -170,7 +174,7 @@ display.setAttribute("style","display:visable;")
 	displayResults(searchResults);
 };
 
-function displayResults(searchResults) {
+function displayResults() {
 	
 	var table = "";
 
@@ -195,7 +199,7 @@ function displayResults(searchResults) {
 		tr += "</tr>";
       	table += tr;
 	}
-	document.getElementById("products").innerHTML += table;
+	productTableEl.innerHTML += table;
 }
 
 searchButtonEl.addEventListener('click', setSearchTerm);
