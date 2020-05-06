@@ -6,6 +6,7 @@ const errorModal = document.querySelector("#error-modal")
 const errorMessage = document.querySelector("#error-message")
 const errorClose = document.querySelector("#modal-close-btn")
 const productTableEl = document.getElementById("products");
+const loader = document.getElementById("loader")
 var searchResults = [];
 
 var error = function(x){
@@ -152,6 +153,8 @@ function setSearchTerm(event) {
 	//prevent page reload
 	event.preventDefault();
 
+	//loader 
+    loader.setAttribute("style","display:visable")
 	//remove current search results
 	productTableEl.innerHTML = '';
 
@@ -176,6 +179,8 @@ display.setAttribute("style","display:visable;")
 function searchResultsComplete() {
 	//check to ensure that searchResults is complete
 	if (searchResults.length === 6) {
+		//remove loader
+		loader.setAttribute("style","display:none")
 		//run displayResults function once to avoid looped results
 		displayResults();
 	}
