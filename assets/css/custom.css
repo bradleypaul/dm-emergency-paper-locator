@@ -15,6 +15,12 @@ font-family: 'Quicksand', sans-serif;
 .prime-icon{
     max-width: 10%;
 }
+.walmart{
+    max-width: 8%;
+}
+.amazon{
+    max-width: 6%;
+}
 
 .header{
     background-color: rgb(249, 254, 255);

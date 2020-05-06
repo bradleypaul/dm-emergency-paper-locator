@@ -210,12 +210,12 @@ function displayResults() {
 		var tr = "<tr>";
 		if (searchResults[i].retailer === "Amazon") {
 			if (searchResults[i].prime) {
-				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
+				tr += "<td> <img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg'</td>"; // FIX PRIME IMAGE
 			} else {
-				tr += "<td>"+searchResults[i].retailer+"</td>";
+				tr += "<td> <img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'> </td>";
 			}
 		} else {
-			tr += "<td>"+searchResults[i].retailer+"</td>";
+			tr += "<td> <img class='walmart' src='./assets/images/Walmart_logo.svg' alt='Walmart'></td>";
 		}
 		
 		tr += "<td>"+searchResults[i].title+"</td>";
