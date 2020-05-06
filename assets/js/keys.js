@@ -159,15 +159,13 @@ function setSearchTerm(event) {
 	searchResults = [];
 	var searchTerm = document.querySelector('#productSelection').value;
 	
-	//call function to fetch product details
-
-	
-var display=document.querySelector("#results")
-var header=document.querySelector("#header")
+	//call function to fetch product details	
+	var display=document.querySelector("#results")
+	var header=document.querySelector("#header")
 
 
-header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
-display.setAttribute("style","display:visable;")
+	header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
+	display.setAttribute("style","display:visable;")
 
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
@@ -177,8 +175,27 @@ function searchResultsComplete() {
 	//check to ensure that searchResults is complete
 	if (searchResults.length === 6) {
 		//run displayResults function once to avoid looped results
+		saveResults();
 		displayResults();
 	}
+};
+
+function loadResults() {
+	var recentResults = localStorage.getItem('searchResults');
+
+	if (!recentResults) {
+		return false;
+	}
+
+	//convert back into array
+	searchResults = JSON.parse(recentResults);
+
+	//display results
+	displayResults();
+};
+
+function saveResults() {
+	localStorage.setItem('searchResults', JSON.stringify(searchResults));
 };
 
 function displayResults() {	
@@ -204,6 +221,7 @@ function displayResults() {
 		  table += tr;
 	}
 	productTableEl.innerHTML += table;
-}
+};
 
+loadResults();
 searchButtonEl.addEventListener('click', setSearchTerm);
