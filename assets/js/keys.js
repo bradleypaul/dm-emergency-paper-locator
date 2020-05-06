@@ -228,9 +228,7 @@ function displayResults() {
 		} else {
 			tr += "<td> $"+searchResults[i].price+"</td>";
 		}
-		
-		tr += "<td>"+searchResults[i].availability+"</td>";
-		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
+		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>";
 		tr += "</tr>";
 		  table += tr;
 	}
