@@ -7,6 +7,8 @@ const errorMessage = document.querySelector("#error-message")
 const errorClose = document.querySelector("#modal-close-btn")
 const productTableEl = document.getElementById("products");
 const loader = document.getElementById("loader")
+const modal=document.querySelector("#modal")
+const closeBtn=document.querySelector("#close-modal")
 var searchResults = [];
 var walmartUrl = '';
 
@@ -24,7 +26,7 @@ const sortBy = 'price';
 let comparator = (a, b) => {
 	if(a[sortBy] < b[sortBy]) return -1;
 	else if(a[sortBy] === b[sortBy]) return 0;
-	else if(a[sortBy] > b[sortBy]) return 0;
+	else if(a[sortBy] > b[sortBy]) return 1;
 };
 
 //get the product url for the first 3 results from Amazon
@@ -93,7 +95,6 @@ function getWalmartProduct(produrl) {
 				walmartUrl = produrl;
 				var productDetails = makeWalmartProduct(data);
 				searchResults.push(productDetails);
-				searchResults.sort(comparator);
 				searchResultsComplete()
 			});
 		}
@@ -115,7 +116,6 @@ function getAmazonProduct(asin) {
 			response.json().then(function(data){
 				var productDetails = makeAmazonProduct(data);
 				searchResults.push(productDetails);
-				searchResults.sort(comparator);
 				searchResultsComplete()
 			})
 		}
@@ -181,9 +181,44 @@ function searchResultsComplete() {
 	if (searchResults.length === 6) {
 		//remove loader
 		loader.setAttribute("style","display:none")
+
+		//filter and sort results
+		searchResults = searchResults.filter(product => product.availability);
+		searchResults.sort(comparator);
+
 		//run displayResults function once to avoid looped results
 		saveResults();
 	}
+};
+
+function displayResults() {	
+	var table = "";
+
+	for (var i=0; i < searchResults.length; i++) {
+		var tr = "<tr>";
+		if (searchResults[i].retailer === "Amazon") {
+			if (searchResults[i].prime) {
+				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
+			} else {
+				tr += "<td>"+searchResults[i].retailer+"</td>";
+			}
+		} else {
+			tr += "<td>"+searchResults[i].retailer+"</td>";
+		}
+		
+		tr += "<td>"+searchResults[i].title+"</td>";
+
+		if (searchResults[i].price === Infinity) {
+			tr += "<td>N/A</td>";
+		} else {
+			tr += "<td> $"+searchResults[i].price+"</td>";
+		}
+		
+		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>";
+		tr += "</tr>";
+		table += tr;
+	}
+	productTableEl.innerHTML += table;
 };
 
 function loadResults() {
@@ -205,35 +240,11 @@ function saveResults() {
 	displayResults();
 };
 
-function displayResults() {	
-	var table = "";
-	searchResults = searchResults.filter(product => product.availability);
-
-	for (var i=0; i < searchResults.length; i++) {
-		var tr = "<tr>";
-		if (searchResults[i].retailer === "Amazon") {
-			if (searchResults[i].prime) {
-				tr += "<td>"+searchResults[i].retailer+' <img class="prime-icon" src="./assets/images/prime-icon.svg"'+"</td>"; // FIX PRIME IMAGE
-			} else {
-				tr += "<td>"+searchResults[i].retailer+"</td>";
-			}
-		} else {
-			tr += "<td>"+searchResults[i].retailer+"</td>";
-		}
-		
-		tr += "<td>"+searchResults[i].title+"</td>";
-
-		if (searchResults[i].price === 'N/A') {
-			tr += "<td>"+searchResults[i].price+"</td>";
-		} else {
-			tr += "<td> $"+searchResults[i].price+"</td>";
-		}
-		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>";
-		tr += "</tr>";
-		  table += tr;
-	}
-	productTableEl.innerHTML += table;
+function closeModal() {
+	modal.setAttribute("class","closed")
+	loadResults();
 };
 
-loadResults();
+closeBtn.addEventListener("click",closeModal)
+
 searchButtonEl.addEventListener('click', setSearchTerm);
