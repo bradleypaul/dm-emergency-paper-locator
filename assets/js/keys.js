@@ -126,7 +126,7 @@ function makeAmazonProduct(product) {
 		retailer: "Amazon",
 		prime: product.prime,
 		title: product.productTitle,
-		price: product.price || '',
+		price: product.price || 'N/A',
 		availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
@@ -136,7 +136,7 @@ function makeWalmartProduct(product) {
 	return {
 		retailer: "Walmart",
 		title: product.productTitle,
-		price: product.price || '',
+		price: product.price || 'N/A',
 		availability: product.available,
 		url: `https://www.walmart.com/ip/${product.walmartItemId}`
 	};
@@ -162,15 +162,13 @@ function setSearchTerm(event) {
 	searchResults = [];
 	var searchTerm = document.querySelector('#productSelection').value;
 	
-	//call function to fetch product details
-
-	
-var display=document.querySelector("#results")
-var header=document.querySelector("#header")
+	//call function to fetch product details	
+	var display=document.querySelector("#results")
+	var header=document.querySelector("#header")
 
 
-header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
-display.setAttribute("style","display:visable;")
+	header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
+	display.setAttribute("style","display:visable;")
 
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
@@ -182,13 +180,32 @@ function searchResultsComplete() {
 		//remove loader
 		loader.setAttribute("style","display:none")
 		//run displayResults function once to avoid looped results
+		saveResults();
 		displayResults();
 	}
 };
 
+function loadResults() {
+	var recentResults = localStorage.getItem('searchResults');
+
+	if (!recentResults) {
+		return false;
+	}
+
+	//convert back into array
+	searchResults = JSON.parse(recentResults);
+
+	//display results
+	displayResults();
+};
+
+function saveResults() {
+	localStorage.setItem('searchResults', JSON.stringify(searchResults));
+};
+
 function displayResults() {	
 	var table = "";
-
+	searchResults = searchResults.filter(product => product.isAvailable);
 	for (var i=0; i < searchResults.length; i++) {
 		var tr = "<tr>";
 		if (searchResults[i].retailer === "Amazon") {
@@ -209,6 +226,7 @@ function displayResults() {
 		  table += tr;
 	}
 	productTableEl.innerHTML += table;
-}
+};
 
+loadResults();
 searchButtonEl.addEventListener('click', setSearchTerm);
