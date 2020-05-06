@@ -222,7 +222,13 @@ function displayResults() {
 		}
 		
 		tr += "<td>"+searchResults[i].title+"</td>";
-		tr += "<td>"+"$"+searchResults[i].price+"</td>";
+
+		if (searchResults[i].price === 'N/A') {
+			tr += "<td>"+searchResults[i].price+"</td>";
+		} else {
+			tr += "<td> $"+searchResults[i].price+"</td>";
+		}
+		
 		tr += "<td>"+searchResults[i].availability+"</td>";
 		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
 		tr += "</tr>";
