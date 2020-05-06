@@ -6,6 +6,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
   <title>Emergency Paper Locator</title>
+  <link rel='icon' href='./assets/images/logo.svg' type='image/x-icon'/>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -17,8 +18,11 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Quicksand:wght@300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/normalize.css">
   <link rel="stylesheet" href="assets/css/skeleton.css">
+  <link rel="stylesheet" href="assets/css/custom.css">
+
 
   
 </head>
@@ -27,58 +31,114 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
-    <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-        <h4>Paper Locator</h4>
-        <p><select class="u-full-width" id="exampleRecipientInput">
-          <option value="Option 1">Toilet Paper</option>
-          <option value="Option 2">Paper Towels</option>
-          <option value="Option 3">Hand Sanitizer</option>
-        </select>
-        <input class="button-primary" type="submit" value="search"> 
-        </p>
-      </div>
-      <div class="one-half column" style="margin-top: 25%">
-        <ul>
-          <li>Pick your quarentine essentials</li>
-          <li>Instantly view the availabilty and pricings from top online retailers</li>
-          <li>Follow the link to order from the shelter of your home</li>
-        </ul>
+    <div id="header" class="row header" style="padding-top: 30%; padding-bottom: 30%">
+    
+      <div class="one-half column " >
+        <div class="brand row">
+        <h2 class="main-header eight-columns title">Paper Locator <img class="logo two columns" src="./assets/images/logo.svg" alt="TP logo"></h2>
+        
+        
+
+      
 
       </div>
     </div>
+    <div class="one-half column " >
+     
+      <p><select class="u-full-width" id="productSelection">
+        <option value="Toilet Paper">Toilet Paper</option>
+        <option value="Paper Towels">Paper Towels</option>
+        <option value="Face Mask Medical">Face Masks</option>
+      
+      </select>
+      <button class="button-primary" type="submit" id="searchProduct">Search</button>
+      </p>
+     
+     
+      
+    </div>
+ 
+</div>
+    <!--Instructional greeting modal-->
+    <div class="modal" id="modal" style="margin-left=15%;"> <!--TODO FIX EQUALS BUG-->
+      <div class="container modal-content">
+        <div class="row" style= "margin-top:10%;">
+          
+          <h1 class="title">Paper Locator <img class="logo two columns" src="assets/images/logo.svg" alt="TP logo"></h1>
+
+       </div>
+       <div style="margin-left: 25%;">
+       <h4>It has become increasingly difficult to find essential paper products.<br/>
+       With Paper Locator you can:</h4>
+       <ul style="margin-left:20%;">
+         <li>Pick your quarantine essentials. We will even help you find face masks!</li>
+         <li>Instantly view the availability and pricings from top online retailers.</li>
+         <li>Follow the provided link to order from the shelter of your home.</li>
+       </ul>
+       <h5 style="margin-left: 12%;">Stay Home, Stay Safe!</h5>
+       <button style="margin-left:12% ;" class="button-primary" id="close-modal">
+         Get Started!
+        </button>
+     </div>
+      
+      </div>
+
   </div>
+</div>
+    
 
   <!-- Table of results will be hidden until search initiated-->
-  <div class="container results">
-   <div class="row">
-  <table class="u-full-width">
-    <thead>
-      <tr>
-        <th>Retailer</th>
-        <th>Price</th>
-        <th>Count</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Amazon</td>
-        <td>$13.68</td>
-        <td>12</td>
-        <td><a class="button" href="#">Go to Site</a></td>
-      </tr>
-      <tr>
-        <td>Walmart</td>
-        <td>$15.49</td>
-        <td>12</td>
-        <td><a class="button" href="#">Go to Site</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
+  <div id="results" class="container results" style="display: none;" >
+    <div class="row">
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Retailer</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Availability</th>
+            <th>Purchase</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tbody id="products">
+          <!-- <tr>
+            <td>Amazon  <img class="prime-icon" src="./assets/images/prime-icon.svg" alt="prime"></td>
+            <td id="title">Charmin 12 Roll</td>
+            <td id="price">$12.49</td>
+            <td><a class="button" id="url" href="#">Go to Site</a></td>
+          </tr>
+          <tr>
+            <td>Walmart</td>
+            <td>what ever type</td>
+            <td>$12.98</td>
+            <td><a class="button" href="#">Go to Site</a></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- error modal-->
+  <div id="error-modal" style="display:none;">
+
+    <!-- Modal content -->
+    <div class="error-modal-content">
+      
+      <p id="error-message"></p>
+
+    <button id="modal-close-btn">OK</button>
+    </div>
+  
+  </div>
+
+
+  <div id="loader" style="display:none"></div>
+
+
+<script src="assets/js/modalHandler.js"></script>
 <script src="assets/js/keys.js"></script>
+
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
