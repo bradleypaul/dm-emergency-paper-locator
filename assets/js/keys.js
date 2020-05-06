@@ -8,16 +8,17 @@ const errorClose = document.querySelector("#modal-close-btn")
 const productTableEl = document.getElementById("products");
 const loader = document.getElementById("loader")
 var searchResults = [];
+var walmartUrl = '';
 
 var error = function(x){
 	errorModal.setAttribute("style","display:visible;");
-	errorMessage.textContent="Error: "+ x ;
+	errorMessage.textContent="Error: " + x ;
     var closeModal=function() {
 	errorModal.setAttribute("style","display:none;");
 	}
 	errorClose.addEventListener("click",closeModal);
 
-}
+};
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -89,6 +90,7 @@ function getWalmartProduct(produrl) {
 	.then(response => {
 		if (response.ok) {
 			response.json().then(function(data){
+				walmartUrl = produrl;
 				var productDetails = makeWalmartProduct(data);
 				searchResults.push(productDetails);
 				searchResults.sort(comparator);
@@ -138,7 +140,7 @@ function makeWalmartProduct(product) {
 		title: product.productTitle,
 		price: product.price || 'N/A',
 		availability: product.available,
-		url: `https://www.walmart.com/ip/${product.walmartItemId}`
+		url: `https://www.walmart.com/${walmartUrl}`
 	};
 }
 
@@ -222,7 +224,7 @@ function displayResults() {
 		tr += "<td>"+searchResults[i].title+"</td>";
 		tr += "<td>"+"$"+searchResults[i].price+"</td>";
 		tr += "<td>"+searchResults[i].availability+"</td>";
-		tr += "<td>"+'<a class="button" href="'+searchResults[i].url+'" target="_blank">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
+		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
 		tr += "</tr>";
 		  table += tr;
 	}
