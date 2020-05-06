@@ -176,7 +176,6 @@ function searchResultsComplete() {
 	if (searchResults.length === 6) {
 		//run displayResults function once to avoid looped results
 		saveResults();
-		displayResults();
 	}
 };
 
@@ -196,11 +195,13 @@ function loadResults() {
 
 function saveResults() {
 	localStorage.setItem('searchResults', JSON.stringify(searchResults));
+	displayResults();
 };
 
 function displayResults() {	
 	var table = "";
-	searchResults = searchResults.filter(product => product.isAvailable);
+	searchResults = searchResults.filter(product => product.availability);
+
 	for (var i=0; i < searchResults.length; i++) {
 		var tr = "<tr>";
 		if (searchResults[i].retailer === "Amazon") {
