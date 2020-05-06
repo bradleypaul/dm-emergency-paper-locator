@@ -9,21 +9,21 @@ const productTableEl = document.getElementById("products");
 const loader = document.getElementById("loader")
 var searchResults = [];
 
-var error = function(x){
-	errorModal.setAttribute("style","display:visible;");
-	errorMessage.textContent="Error: "+ x ;
-    var closeModal=function() {
-	errorModal.setAttribute("style","display:none;");
+var error = function (x) {
+	errorModal.setAttribute("style", "display:visible;");
+	errorMessage.textContent = "Error: " + x;
+	var closeModal = function () {
+		errorModal.setAttribute("style", "display:none;");
 	}
-	errorClose.addEventListener("click",closeModal);
+	errorClose.addEventListener("click", closeModal);
 
 }
 
 const sortBy = 'price';
 let comparator = (a, b) => {
-	if(a[sortBy] < b[sortBy]) return -1;
-	else if(a[sortBy] === b[sortBy]) return 0;
-	else if(a[sortBy] > b[sortBy]) return 0;
+	if (a[sortBy] < b[sortBy]) return -1;
+	else if (a[sortBy] === b[sortBy]) return 0;
+	else if (a[sortBy] > b[sortBy]) return 1;
 };
 
 //get the product url for the first 3 results from Amazon
@@ -34,22 +34,22 @@ function getAmazonUrl(searchTerm) {
 			"x-rapidapi-key": axessoKey
 		}
 	})
-	.then(response => {
-		if (response.ok) {
-			response.json().then(function(data){
-				//loop through the top three results to get asin
-				for(i =0; i < 3; i++) {
-					var asin = data.searchProductDetails[i].asin;
-					//load asin to get specific product details
-					getAmazonProduct(asin);
-				}
-			});
-		} else {
-			//error modal
-			error( response.statusText);
+		.then(response => {
+			if (response.ok) {
+				response.json().then(function (data) {
+					//loop through the top three results to get asin
+					for (i = 0; i < 3; i++) {
+						var asin = data.searchProductDetails[i].asin;
+						//load asin to get specific product details
+						getAmazonProduct(asin);
+					}
+				});
+			} else {
+				//error modal
+				error(response.statusText);
 
-		}
-	});
+			}
+		});
 };
 
 
@@ -59,23 +59,23 @@ function getWalmartUrl(searchTerm) {
 		"method": "GET",
 		"headers": {
 			"x-rapidapi-host": walmartHost,
-			"x-rapidapi-key": axessoKey 
+			"x-rapidapi-key": axessoKey
 		}
 	})
-	.then(response => {
-		if (response.ok) {
-			response.json().then(function(data) {
-				for (i=0; i < 3; i++) {
-					var produrl = data.foundProducts[i];
-					//load product url to get specific product details
-					getWalmartProduct(produrl);
-				}
-			});
-		} else {
-			//error modal
-			error( response.statusText);
-		}
-	});
+		.then(response => {
+			if (response.ok) {
+				response.json().then(function (data) {
+					for (i = 0; i < 3; i++) {
+						var produrl = data.foundProducts[i];
+						//load product url to get specific product details
+						getWalmartProduct(produrl);
+					}
+				});
+			} else {
+				//error modal
+				error(response.statusText);
+			}
+		});
 };
 
 function getWalmartProduct(produrl) {
@@ -86,16 +86,17 @@ function getWalmartProduct(produrl) {
 			"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
 		}
 	})
-	.then(response => {
-		if (response.ok) {
-			response.json().then(function(data){
-				var productDetails = makeWalmartProduct(data);
-				searchResults.push(productDetails);
-				searchResults.sort(comparator);
-				searchResultsComplete()
-			});
-		}
-	});
+		.then(response => {
+			if (response.ok) {
+				response.json().then(function (data) {
+					walmartUrl = produrl;
+					var productDetails = makeWalmartProduct(data);
+					searchResults.push(productDetails);
+					searchResults.sort(comparator);
+					searchResultsComplete()
+				});
+			}
+		});
 };
 
 
@@ -107,17 +108,17 @@ function getAmazonProduct(asin) {
 			"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
 		}
 	})
-	.then(response => {
-		//verify a result was received
-		if (response.ok) {
-			response.json().then(function(data){
-				var productDetails = makeAmazonProduct(data);
-				searchResults.push(productDetails);
-				searchResults.sort(comparator);
-				searchResultsComplete()
-			})
-		}
-	});
+		.then(response => {
+			//verify a result was received
+			if (response.ok) {
+				response.json().then(function (data) {
+					var productDetails = makeAmazonProduct(data);
+					searchResults.push(productDetails);
+					searchResults.sort(comparator);
+					searchResultsComplete()
+				})
+			}
+		});
 };
 
 
@@ -126,7 +127,7 @@ function makeAmazonProduct(product) {
 		retailer: "Amazon",
 		prime: product.prime,
 		title: product.productTitle,
-		price: product.price || 'N/A',
+		price: parseFloat(product.price) || Infinity,
 		availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
@@ -136,7 +137,7 @@ function makeWalmartProduct(product) {
 	return {
 		retailer: "Walmart",
 		title: product.productTitle,
-		price: product.price || 'N/A',
+		price: parseFloat(product.price) || Infinity,
 		availability: product.available,
 		url: `https://www.walmart.com/ip/${product.walmartItemId}`
 	};
@@ -154,21 +155,21 @@ function setSearchTerm(event) {
 	event.preventDefault();
 
 	//loader 
-    loader.setAttribute("style","display:visable")
+	loader.setAttribute("style", "display:visable")
 	//remove current search results
 	productTableEl.innerHTML = '';
 
 	//get the current selected value
 	searchResults = [];
 	var searchTerm = document.querySelector('#productSelection').value;
-	
+
 	//call function to fetch product details	
-	var display=document.querySelector("#results")
-	var header=document.querySelector("#header")
+	var display = document.querySelector("#results")
+	var header = document.querySelector("#header")
 
 
-	header.setAttribute("style","padding-top: 10%; padding-bottom: 1%")
-	display.setAttribute("style","display:visable;")
+	header.setAttribute("style", "padding-top: 10%; padding-bottom: 1%")
+	display.setAttribute("style", "display:visable;")
 
 	getAmazonUrl(searchTerm);
 	getWalmartUrl(searchTerm);
@@ -178,7 +179,7 @@ function searchResultsComplete() {
 	//check to ensure that searchResults is complete
 	if (searchResults.length === 6) {
 		//remove loader
-		loader.setAttribute("style","display:none")
+		loader.setAttribute("style", "display:none")
 		//run displayResults function once to avoid looped results
 		saveResults();
 		displayResults();
@@ -203,30 +204,37 @@ function saveResults() {
 	localStorage.setItem('searchResults', JSON.stringify(searchResults));
 };
 
-function displayResults() {	
+function displayResults() {
 	var table = "";
-	searchResults = searchResults.filter(product => product.isAvailable);
-	for (var i=0; i < searchResults.length; i++) {
+	searchResults = searchResults.filter(product => product.availability);
+	searchResults.sort(comparator);
+	for (var i = 0; i < searchResults.length; i++) {
 		var tr = "<tr>";
 		if (searchResults[i].retailer === "Amazon") {
 			if (searchResults[i].prime) {
-				tr += "<td> <img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg'</td>"; // FIX PRIME IMAGE
+				tr += "<td> <img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg' </td>"; // FIX PRIME IMAGE
 			} else {
-				tr += "<td> <img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'> </td>";
+				tr += "<td><img class='amazon'src='./assets/images/Amazon_logo.svg' alt='Amazon'></td>";
 			}
 		} else {
-			tr += "<td> <img class='walmart' src='./assets/images/Walmart_logo.svg' alt='Walmart'></td>";
+			tr += "<td><img class='walmart' src='./assets/images/Walmart_logo.svg' alt='Walmart'></td>";
 		}
-		
-		tr += "<td>"+searchResults[i].title+"</td>";
-		tr += "<td>"+"$"+searchResults[i].price+"</td>";
-		tr += "<td>"+searchResults[i].availability+"</td>";
-		tr += "<td>"+'<a class="button" href="'+searchResults[i].url+'" target="_blank">Go to Site</a>'+"</td>"; // WALMART URL BROKEN
-		tr += "</tr>";
-		  table += tr;
+
+		tr += "<td>" + searchResults[i].title + "</td>";
+		if (typeof searchResults[i].price === 'number') {
+			if (searchResults[i].price === Infinity) {
+				tr += "<td>N/A</td>";
+			} else
+				var price = searchResults[i].price;
+			tr += "<td> $" + price.toFixed(2) + "</td>";
+		}
 	}
+	tr += "<td>" + '<a class="button" href="' + searchResults[i].url + '" target="_blank">Go to Site</a>' + "</td>";
+	tr += "</tr>";
+	table += tr;
+
 	productTableEl.innerHTML += table;
-};
+}
 
 loadResults();
 searchButtonEl.addEventListener('click', setSearchTerm);
