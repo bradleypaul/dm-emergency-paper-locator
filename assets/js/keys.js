@@ -125,7 +125,7 @@ function makeAmazonProduct(product) {
 		retailer: "Amazon",
 		prime: product.prime,
 		title: product.productTitle,
-		price: product.price || '',
+		price: product.price || 'N/A',
 		availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
@@ -135,7 +135,7 @@ function makeWalmartProduct(product) {
 	return {
 		retailer: "Walmart",
 		title: product.productTitle,
-		price: product.price || '',
+		price: product.price || 'N/A',
 		availability: product.available,
 		url: `https://www.walmart.com/ip/${product.walmartItemId}`
 	};
@@ -183,7 +183,7 @@ function searchResultsComplete() {
 
 function displayResults() {	
 	var table = "";
-
+	searchResults = searchResults.filter(product => product.isAvailable);
 	for (var i=0; i < searchResults.length; i++) {
 		var tr = "<tr>";
 		if (searchResults[i].retailer === "Amazon") {
