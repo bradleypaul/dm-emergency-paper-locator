@@ -54,6 +54,10 @@ function getAmazonUrl(searchTerm) {
 				searchResultsComplete()
 
 			}
+		}).catch(function(error){
+			//error modal
+			searchesRan += 3;
+			searchResultsComplete()
 		});
 };
 
@@ -81,6 +85,10 @@ function getWalmartUrl(searchTerm) {
 				searchesRan += 3;
 				searchResultsComplete()
 			}
+		}).catch(function(error){
+			//error modal
+			searchesRan += 3;
+			searchResultsComplete()
 		});
 };
 
