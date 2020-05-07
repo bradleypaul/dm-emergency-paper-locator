@@ -151,7 +151,7 @@ function makeWalmartProduct(product) {
 		title: product.productTitle,
 		price: parseFloat(product.price) || Infinity,
 		availability: product.available,
-		url: `https://www.walmart.com/ip/${product.walmartItemId}`
+		url: `https://www.walmart.com/${walmartUrl}`
 	};
 }
 
