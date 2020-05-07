@@ -21,7 +21,7 @@ var error = function (x) {
 	}
 	errorClose.addEventListener("click", closeModal);
 
-};
+}
 
 const sortBy = 'price';
 let comparator = (a, b) => {
@@ -151,7 +151,7 @@ function makeWalmartProduct(product) {
 		title: product.productTitle,
 		price: parseFloat(product.price) || Infinity,
 		availability: product.available,
-		url: `https://www.walmart.com/${walmartUrl}`
+		url: `https://www.walmart.com/ip/${product.walmartItemId}`
 	};
 }
 
@@ -202,6 +202,7 @@ function searchResultsComplete() {
 
 		//run displayResults function once to avoid looped results
 		saveResults();
+		displayResults();
 	}
 };
 
@@ -213,12 +214,12 @@ function displayResults() {
 
 		if (searchResults[i].retailer === "Amazon") {
 			if (searchResults[i].prime) {
-				tr += "<td>" + searchResults[i].retailer + ' <img class="prime-icon" src="./assets/images/prime-icon.svg"' + "</td>"; // FIX PRIME IMAGE
+				tr += "<td> <img class='amazon'src='assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg'</td>"; 
 			} else {
-				tr += "<td>" + searchResults[i].retailer + "</td>";
+				tr += "<td> <img class='amazon'src='assets/images/Amazon_logo.svg' alt='Amazon'> </td>";
 			}
 		} else {
-			tr += "<td>" + searchResults[i].retailer + "</td>";
+			tr += "<td> <img class='walmart' src='assets/images/Walmart_logo.svg' alt='Walmart'> </td>";
 		}
 
 		tr += "<td>"+searchResults[i].title+"</td>";
@@ -260,7 +261,6 @@ function loadResults() {
 
 function saveResults() {
 	localStorage.setItem('searchResults', JSON.stringify(searchResults));
-	displayResults();
 };
 
 function closeModal() {
