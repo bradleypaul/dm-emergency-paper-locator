@@ -1,3 +1,5 @@
+"use strict";
+
 const axessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
 
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
@@ -13,12 +15,12 @@ const amazonHeaders = {
 };
 
 const searchButtonEl = document.querySelector('#searchProduct');
-const errorModal = document.querySelector("#error-modal")
-const errorMessage = document.querySelector("#error-message")
-const errorClose = document.querySelector("#modal-close-btn")
+const errorModal = document.querySelector("#error-modal");
+const errorMessage = document.querySelector("#error-message");
+const errorClose = document.querySelector("#modal-close-btn");
 const productTableEl = document.querySelector("#products");
-const loader = document.getElementById("loader")
-const modal = document.querySelector("#modal")
+const loader = document.getElementById("loader");
+const modal = document.querySelector("#modal");
 const closeBtn = document.querySelector("#close-modal")
 var searchResults = [];
 var walmartUrl = '';
@@ -51,7 +53,7 @@ function getAmazonUrl(searchTerm) {
 			if (response.ok) {
 				response.json().then(function (data) {
 					//loop through the top three results to get asin
-					for (i = 0; i < 3; i++) {
+					for (let i = 0; i < 3; i++) {
 						var asin = data.searchProductDetails[i].asin;
 						//load asin to get specific product details
 						getAmazonProduct(asin);
@@ -79,7 +81,7 @@ function getWalmartUrl(searchTerm) {
 		.then(response => {
 			if (response.ok) {
 				response.json().then(function (data) {
-					for (i = 0; i < 3; i++) {
+					for (let i = 0; i < 3; i++) {
 						var produrl = data.foundProducts[i];
 						//load product url to get specific product details
 						getWalmartProduct(produrl);
