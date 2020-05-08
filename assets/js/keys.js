@@ -1,14 +1,26 @@
 const axessoKey = `LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W`;
+
 const walmartHost = `axesso-walmart-data-service.p.rapidapi.com`;
+const walmartHeaders = {
+	"x-rapidapi-key": axessoKey,
+	"x-rapidapi-host": walmartHost
+};
+
 const amazonHost = `axesso-axesso-amazon-data-service-v1.p.rapidapi.com`;
+const amazonHeaders = {
+	"x-rapidapi-key": axessoKey,
+	"x-rapidapi-host": amazonHost
+};
+
+
 const searchButtonEl = document.querySelector('#searchProduct');
 const errorModal = document.querySelector("#error-modal")
 const errorMessage = document.querySelector("#error-message")
 const errorClose = document.querySelector("#modal-close-btn")
 const productTableEl = document.querySelector("#products");
 const loader = document.getElementById("loader")
-const modal=document.querySelector("#modal")
-const closeBtn=document.querySelector("#close-modal")
+const modal = document.querySelector("#modal")
+const closeBtn = document.querySelector("#close-modal")
 var searchResults = [];
 var walmartUrl = '';
 var searchesRan = 0;
@@ -25,18 +37,16 @@ var error = function (x) {
 
 const sortBy = 'price';
 let comparator = (a, b) => {
-	if(a[sortBy] < b[sortBy]) return -1;
-	else if(a[sortBy] === b[sortBy]) return 0;
-	else if(a[sortBy] > b[sortBy]) return 1;
+	if (a[sortBy] < b[sortBy]) return -1;
+	else if (a[sortBy] === b[sortBy]) return 0;
+	else if (a[sortBy] > b[sortBy]) return 1;
 };
 
 //get the product url for the first 3 results from Amazon
 function getAmazonUrl(searchTerm) {
 	fetch(`https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-search-by-keyword-asin?sortBy=relevanceblender&domainCode=com&keyword=${searchTerm}&page=1`, {
 		"method": "GET",
-		"headers": {
-			"x-rapidapi-key": axessoKey
-		}
+		"headers": amazonHeaders
 	})
 		.then(response => {
 			if (response.ok) {
@@ -54,7 +64,8 @@ function getAmazonUrl(searchTerm) {
 				searchResultsComplete()
 
 			}
-		}).catch(function(error){
+		})
+		.catch(function (error) {
 			//error modal
 			searchesRan += 3;
 			searchResultsComplete()
@@ -66,10 +77,7 @@ function getAmazonUrl(searchTerm) {
 function getWalmartUrl(searchTerm) {
 	fetch(`https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-search-by-keyword?sortBy=best_match&page=1&keyword=${searchTerm}&type=text`, {
 		"method": "GET",
-		"headers": {
-			"x-rapidapi-host": walmartHost,
-			"x-rapidapi-key": axessoKey
-		}
+		"headers": walmartHeaders
 	})
 		.then(response => {
 			if (response.ok) {
@@ -85,7 +93,8 @@ function getWalmartUrl(searchTerm) {
 				searchesRan += 3;
 				searchResultsComplete()
 			}
-		}).catch(function(error){
+		})
+		.catch(function (error) {
 			//error modal
 			searchesRan += 3;
 			searchResultsComplete()
@@ -95,50 +104,50 @@ function getWalmartUrl(searchTerm) {
 function getWalmartProduct(produrl) {
 	fetch("https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product?url=https://www.walmart.com" + produrl, {
 		"method": "GET",
-		"headers": {
-			"x-rapidapi-host": "axesso-walmart-data-service.p.rapidapi.com",
-			"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
-		}
+		"headers": walmartHeaders
 	})
-	.then(response => {
-		if (response.ok) {
-			response.json().then(function(data){
-				walmartUrl = produrl;
-				var productDetails = makeWalmartProduct(data);
-				searchResults.push(productDetails);
+		.then(response => {
+			if (response.ok) {
+				response.json().then(function (data) {
+					walmartUrl = produrl;
+					var productDetails = makeWalmartProduct(data);
+					searchResults.push(productDetails);
+					searchResultsComplete()
+				});
+			} else {
+				searchesRan++;
 				searchResultsComplete()
-			});
-		} else {
-			searchesRan++;
-			searchResultsComplete()
-		}
-	});
+			}
+		});
 };
 
 
 function getAmazonProduct(asin) {
 	fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/dp/" + asin, {
 		"method": "GET",
-		"headers": {
-			"x-rapidapi-host": "axesso-axesso-amazon-data-service-v1.p.rapidapi.com",
-			"x-rapidapi-key": "LIf3v3u97Wmshek4PIKJGfwmDRHHp1e33VnjsnxVU7ZUW0fu5W"
-		}
+		"headers": amazonHeaders
 	})
-	.then(response => {
-		//verify a result was received
-		if (response.ok) {
-			response.json().then(function(data){
-				var productDetails = makeAmazonProduct(data);
-				searchResults.push(productDetails);
+		.then(response => {
+			//verify a result was received
+			if (response.ok) {
+				response.json().then(function (data) {
+					var productDetails = makeAmazonProduct(data);
+					searchResults.push(productDetails);
+					searchResultsComplete()
+				})
+			} else {
+				searchesRan++;
 				searchResultsComplete()
-			})
-		} else {
-			searchesRan++;
-			searchResultsComplete()
-		}
-	});
+			}
+		});
 };
 
+function convertPrice(price) {
+	// set price to Infinity if parseFloat returns NaN, 0, etc.
+	// 0 seems like it could mean free but really is likely a filler value, not 
+	// truely free
+	return parseFloat(price) || Infinity;
+}
 
 function makeAmazonProduct(product) {
 	searchesRan++;
@@ -146,7 +155,7 @@ function makeAmazonProduct(product) {
 		retailer: "Amazon",
 		prime: product.prime,
 		title: product.productTitle,
-		price: parseFloat(product.price) || Infinity,
+		price: convertPrice(product.price),
 		availability: isAvailable(product.warehouseAvailability),
 		url: `https://www.amazon.com/dp/${product.asin}`
 	};
@@ -157,7 +166,7 @@ function makeWalmartProduct(product) {
 	return {
 		retailer: "Walmart",
 		title: product.productTitle,
-		price: parseFloat(product.price) || Infinity,
+		price: convertPrice(product.price),
 		availability: product.available,
 		url: `https://www.walmart.com/${walmartUrl}`
 	};
@@ -202,7 +211,7 @@ function searchResultsComplete() {
 	//check to ensure that searchResults is complete
 	if (searchesRan === 6) {
 		//remove loader
-		loader.setAttribute("style","display:none")
+		loader.setAttribute("style", "display:none")
 
 		//filter and sort results
 		searchResults = searchResults.filter(product => product.availability);
@@ -217,12 +226,12 @@ function searchResultsComplete() {
 function displayResults() {
 	var table = "";
 
-	for (var i=0; i < searchResults.length; i++) {
+	for (var i = 0; i < searchResults.length; i++) {
 		var tr = "<tr>";
 
 		if (searchResults[i].retailer === "Amazon") {
 			if (searchResults[i].prime) {
-				tr += "<td> <img class='amazon'src='assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg'</td>"; 
+				tr += "<td> <img class='amazon'src='assets/images/Amazon_logo.svg' alt='Amazon'> <img class='prime-icon' src='./assets/images/prime-icon.svg'</td>";
 			} else {
 				tr += "<td> <img class='amazon'src='assets/images/Amazon_logo.svg' alt='Amazon'> </td>";
 			}
@@ -230,15 +239,17 @@ function displayResults() {
 			tr += "<td> <img class='walmart' src='assets/images/Walmart_logo.svg' alt='Walmart'> </td>";
 		}
 
-		tr += "<td>"+searchResults[i].title+"</td>";
+		tr += "<td>" + searchResults[i].title + "</td>";
 
-		if (searchResults[i].price === Infinity) {
-			tr += "<td>N/A</td>";
-		} else {
-			tr += "<td> $"+searchResults[i].price+"</td>";
+		// guard check if the price is null 
+		if (typeof searchResults[i].price === 'number') {
+			if (searchResults[i].price === Infinity) {
+				tr += "<td>N/A</td>";
+			} else {
+				tr += "<td> $" + searchResults[i].price.toFixed(2) + "</td>";
+			}
 		}
-		
-		tr += "<td>"+'<a class="button" href="'+ searchResults[i].url +'" target="_blank">Go to Site</a>'+"</td>";
+		tr += "<td>" + '<a class="button" href="' + searchResults[i].url + '" target="_blank">Go to Site</a>' + "</td>";
 		tr += "</tr>";
 		table += tr;
 	}
@@ -262,7 +273,7 @@ function loadResults() {
 
 	header.setAttribute("style", "padding-top: 10%; padding-bottom: 1%")
 	display.setAttribute("style", "display:visable;")
-	
+
 	//load funcction to load a different function
 	displayResults();
 };
@@ -272,9 +283,9 @@ function saveResults() {
 };
 
 function closeModal() {
-	modal.setAttribute("class","closed")
+	modal.setAttribute("class", "closed")
 	loadResults();
 };
 
-closeBtn.addEventListener("click",closeModal)
+closeBtn.addEventListener("click", closeModal)
 searchButtonEl.addEventListener('click', setSearchTerm);
