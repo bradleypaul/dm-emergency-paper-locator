@@ -12,7 +12,6 @@ const amazonHeaders = {
 	"x-rapidapi-host": amazonHost
 };
 
-
 const searchButtonEl = document.querySelector('#searchProduct');
 const errorModal = document.querySelector("#error-modal")
 const errorMessage = document.querySelector("#error-message")
@@ -62,7 +61,6 @@ function getAmazonUrl(searchTerm) {
 				//error modal
 				searchesRan += 3;
 				searchResultsComplete()
-
 			}
 		})
 		.catch(function (error) {
@@ -71,7 +69,6 @@ function getAmazonUrl(searchTerm) {
 			searchResultsComplete()
 		});
 };
-
 
 //get the product url for the first 3 results from Walmart
 function getWalmartUrl(searchTerm) {
@@ -120,7 +117,6 @@ function getWalmartProduct(produrl) {
 			}
 		});
 };
-
 
 function getAmazonProduct(asin) {
 	fetch("https://axesso-axesso-amazon-data-service-v1.p.rapidapi.com/amz/amazon-lookup-product?url=https://www.amazon.com/dp/" + asin, {
@@ -267,11 +263,11 @@ function loadResults() {
 	searchResults = JSON.parse(recentResults);
 
 	//call function to fetch product details	
-	var display = document.querySelector("#results")
-	var header = document.querySelector("#header")
+	var display = document.querySelector("#results");
+	var header = document.querySelector("#header");
 
 
-	header.setAttribute("style", "padding-top: 10%; padding-bottom: 1%")
+	header.setAttribute("style", "padding-top: 10%; padding-bottom: 1%");
 	display.setAttribute("style", "display:visable;")
 
 	//load funcction to load a different function
@@ -283,9 +279,9 @@ function saveResults() {
 };
 
 function closeModal() {
-	modal.setAttribute("class", "closed")
+	modal.setAttribute("class", "closed");
 	loadResults();
 };
 
-closeBtn.addEventListener("click", closeModal)
+closeBtn.addEventListener("click", closeModal);
 searchButtonEl.addEventListener('click', setSearchTerm);
