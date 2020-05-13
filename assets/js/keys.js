@@ -21,15 +21,14 @@ const errorClose = document.querySelector("#modal-close-btn");
 const productTableEl = document.querySelector("#products");
 const loader = document.getElementById("loader");
 const modal = document.querySelector("#modal");
-const closeBtn = document.querySelector("#close-modal");
 var searchResults = [];
 var walmartUrl = '';
 var searchesRan = 0;
 
-var error = function (x) {
+let error = function (x) {
 	errorModal.setAttribute("style", "display:visible;");
 	errorMessage.textContent = "Error: " + x;
-	var closeModal = function () {
+	let closeModal = function () {
 		errorModal.setAttribute("style", "display:none;");
 	}
 	errorClose.addEventListener("click", closeModal);
@@ -108,7 +107,7 @@ function getWalmartProduct(produrl) {
 		.then(response => {
 			if (response.ok) {
 				response.json().then(function (data) {
-					walmartUrl = produrl;
+					data.url = produrl;
 					var productDetails = makeWalmartProduct(data);
 					searchResults.push(productDetails);
 					searchResultsComplete();
@@ -166,7 +165,7 @@ function makeWalmartProduct(product) {
 		title: product.productTitle,
 		price: convertPrice(product.price),
 		availability: product.available,
-		url: `https://www.walmart.com/${walmartUrl}`
+		url: `https://www.walmart.com/${url}`
 	};
 }
 
@@ -285,5 +284,5 @@ function closeModal() {
 	loadResults();
 };
 
-closeBtn.addEventListener("click", closeModal);
+document.querySelector("#close-modal").addEventListener("click", closeModal);
 searchButtonEl.addEventListener('click', setSearchTerm);
